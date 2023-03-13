@@ -6,8 +6,8 @@ local command = root_folder .. "scripts/jet"
 
 function M.setup(opts)
   opts = opts or {}
-  timeout = opts.timeout or 20000
-  setup_lspconfig = opts.setup_lspconfig or true
+  local timeout = opts.timeout or 20000
+  -- setup_lspconfig = opts.setup_lspconfig or true
   local null_ls = require("null-ls")
   local helpers = require("null-ls.helpers")
   local builtins = null_ls.builtins
@@ -43,10 +43,6 @@ function M.setup(opts)
   }
 
   null_ls.register(jet_julia)
-
-  if setup_lspconfig then
-    require("lspconfig")["null-ls"].setup({})
-  end
 end
 
 return M
