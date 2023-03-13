@@ -1,8 +1,3 @@
-#!/usr/bin/env julia --startup-file=no --project=~/.julia/environments/nvim-null-ls
-
-# **Usage**
-# $ jet filename.jl
-
 using JET
 
 filename = only(ARGS)
@@ -23,43 +18,39 @@ function print_reports(io, result)
             end
             print_report(io, report)
         end
-    end |> postprocess |> (x->print(io::IO,x))
+    end |> postprocess |> (x -> print(io::IO, x))
 
 end
 
-function print_report(io, report::JET.InferenceErrorReport, depth = 1)
+function print_report(io, report::JET.InferenceErrorReport, depth=1)
     if length(report.vst) == depth # error here
         return print_error_report(io, report)
     end
     print_report(io, report, depth + 1)
 end
 
+function get_report_msg(report::JET.InferenceErrorReport)
+    buf = IOBuffer()
+    JET.print_report(buf, report)
+    return String(take!(buf))
+end
+
 function print_error_report(io, report::JET.InferenceErrorReport)
     frame = report.vst[1]
     printstyled(io, string(frame.line), ":")
     printstyled(io, "E", ": ")
-    printstyled(io, report.msg, ": "; color = JET.ERROR_COLOR)
+    printstyled(io, get_report_msg(report), ": "; color=JET.ERROR_COLOR)
     JET.print_signature(io, report.sig,
-                    (; annotate_types = true); # always annotate types for errored signatures
-                    bold = true,
-                    )
+        (; annotate_types=true); # always annotate types for errored signatures
+        bold=true
+    )
+    print(io, '\n')
 end
 
 function print_error_report(io, report)
-    printstyled(io, report.msg, "\n"; color = JET.ERROR_COLOR)
+    printstyled(io, report.msg, "\n"; color=JET.ERROR_COLOR)
 end
 
-while true
-    while !eof(stdin)
-        line = readline(stdin)
-    end
-    r = report_file(filename, analyze_from_definitions = true)
-    print_reports(stderr, r)
-    sleep(5)
-end
+r = report_file(filename, analyze_from_definitions=true)
+print_reports(stderr, r)
 
-# f = open("test.log", "w")
-# write(f, filename * "\n")
-
-# write(f, "finished. \n")
-# close(f)

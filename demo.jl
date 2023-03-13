@@ -32,6 +32,8 @@ end
 foo(1.2)
 foo("1") # `String` can't be converted to `Number`
 
+sum(['a'])
+
 # even staged programming
 # adapted from https://github.com/JuliaLang/julia/blob/9f665c19e076ab37cbca2d0cc99283b82e99c26f/base/namedtuple.jl#L253-L264
 @generated function badmerge(a::NamedTuple{an}, b::NamedTuple{bn}) where {an, bn}
