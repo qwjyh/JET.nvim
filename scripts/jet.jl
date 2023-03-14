@@ -1,3 +1,5 @@
+# get error report from JET.jl then parse and print it to stderr
+
 using JET
 
 filename = only(ARGS)
