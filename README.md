@@ -2,6 +2,21 @@
 
 ![](https://aws1.discourse-cdn.com/business5/uploads/julialang/original/3X/b/4/b47f035733d3f3fab9dd9c13f0e5446e60f59d3c.jpeg)
 
+## checked environments
+
+```sh
+$ nvim --version | head -1
+NVIM v0.8.3
+$ julia -e 'using InteractiveUtils, Pkg, JET; versioninfo(); println(Pkg.status("JET"))'
+Julia Version 1.8.5
+commit 17cfb8e65ea (2023-01-08 06:45 UTC)
+Platform Info:
+  OS: Linux (x86_64-linux-gnu)
+  ...
+Status `~/.julia/environments/v1.8/Project.toml`
+  [c3a54625] JET v0.7.7
+```
+
 ## Install
 
 **With [Packer](https://github.com/wbthomason/packer.nvim):**
@@ -45,5 +60,12 @@ EOF
 require("jet").setup({
   timeout = 15000, -- timeout for JET.jl
   setup_lspconfig = true, -- configure lspconfig
+  debug = false, -- set null-ls debug
 })
 ```
+
+## Usage
+
+This plugin scans saved files, so be sure to save them.
+Commands `JETls start`, `JETls stop`, `JETls restart` is available.
+
